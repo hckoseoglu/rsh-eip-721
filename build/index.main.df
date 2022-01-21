@@ -1,0 +1,1138 @@
+#lang ll
+parts {
+  "Creator" = interact {
+    getParams = IT_Fun [] Object({"name": Bytes(32), "symbol": Bytes(32), "uri": Bytes(128)})},
+  "approve" = interact {
+    in = IT_Fun [] Tuple(Address, UInt),
+    out = IT_Fun [Tuple(Address, UInt),Bool] Null},
+  "safeTransferFrom" = interact {
+    in = IT_Fun [] Tuple(Address, Address, UInt),
+    out = IT_Fun [Tuple(Address, Address, UInt),Bool] Null},
+  "setApprovalForAll" = interact {
+    in = IT_Fun [] Tuple(Address, Bool),
+    out = IT_Fun [Tuple(Address, Bool),Bool] Null},
+  "transferFrom" = interact {
+    in = IT_Fun [] Tuple(Address, Address, UInt),
+    out = IT_Fun [Tuple(Address, Address, UInt),Bool] Null}};
+
+// maps
+{
+  map0 = Bool}
+// initialization
+
+{
+  }
+{
+  Nothing = {
+    balanceOf = IT_Fun [Address] UInt,
+    getApproved = IT_Fun [UInt] Address,
+    isApprovedForAll = IT_Fun [Address,Address] Bool,
+    name = IT_Val Bytes(32),
+    ownerOf = IT_Fun [UInt] Address,
+    symbol = IT_Val Bytes(32),
+    tokenURI = IT_Fun [UInt] Bytes(128)}}
+{
+  Nothing = {
+    approve = ("approve", IT_Fun [Address,UInt] Bool),
+    safeTransferFrom = ("safeTransferFrom", IT_Fun [Address,Address,UInt] Bool),
+    setApprovalForAll = ("setApprovalForAll", IT_Fun [Address,Bool] Bool),
+    transferFrom = ("transferFrom", IT_Fun [Address,Address,UInt] Bool)}}
+{
+  Nothing = {
+    Approval = [Address, Address, UInt],
+    ApprovalForAll = [Address, Address, Bool],
+    Transfer = [Address, Address, UInt]}}
+const v5* = {
+  i = 0,
+  sign = true};
+const v7* = {
+  i = 0,
+  sign = true};
+only(Left "Creator") {
+   };
+only(Left "approve") {
+   };
+only(Left "safeTransferFrom") {
+   };
+only(Left "setApprovalForAll") {
+   };
+only(Left "transferFrom") {
+   };
+only(Left "Creator") {
+  const v20* = selfAddress("Creator", False, 19 )();
+  let v21;
+  const v22* = protect<Object({"name": Bytes(32), "symbol": Bytes(32), "uri": Bytes(128)})>("Creator".interact.getParams());
+  const v23* = v22.name;
+  const v24* = v22.symbol;
+  const v25* = v22.uri;
+  v21 = null;
+   };
+only(Left "Creator") {
+   };
+publish(@0)
+  .case("Creator").send({
+    isClass = False,
+    msg = [name/23, symbol/24, uri/25],
+    pay = [0, ],
+    when = true})
+  .recv({
+    didSend = v33,
+    from = v26,
+    msg = [v27, v28, v29],
+    secs = v32,
+    time = v31}){
+    timeOrder((Nothing, thisConsensusTime/31 ), (Nothing, thisConsensusSecs/32 ) );
+    const v30* = 0;
+    checkPay(0, Nothing);
+    commit();
+    only(Left "Creator") {
+       };
+    publish(@thisConsensusTime/31)
+      .case("Creator").send({
+        isClass = False,
+        msg = [],
+        pay = [0, ],
+        when = true})
+      .recv({
+        didSend = v39,
+        from = v34,
+        msg = [],
+        secs = v38,
+        time = v37}){
+        timeOrder((Just thisConsensusTime/31, thisConsensusTime/37 ), (Just thisConsensusSecs/32, thisConsensusSecs/38 ) );
+        const v35* = balance(0)/30;
+        checkPay(0, Nothing);
+        const v36* = v26 == v34;
+        claim(CT_Require)(v36, Just "sender correct");
+        view(Nothing).name.is(Just export (Nothing) => {
+        return name/27;})
+        view(Nothing).symbol.is(Just export (Nothing) => {
+        return symbol/28;})
+        view(Nothing).tokenURI.is(Just export (Just [v40]) => {
+        return uri/29;})
+        loopvar {
+          v47 = v26,
+          v48 = v26,
+          v469 = thisConsensusTime/37,
+          v470 = thisConsensusTime/31,
+          v471 = thisConsensusTime/31,
+          v472 = thisConsensusSecs/38,
+          v473 = thisConsensusSecs/32,
+          v474 = thisConsensusSecs/32,
+          v475 = balance(0)/35};
+        invariant{
+          const v70* = balance(0)/475;
+          const v71* = balance(0)/70 == 0;
+          
+          return v71; }
+        while{
+          
+          return true; }
+        {
+          view(Nothing).ownerOf.is(Just export (Just [v93]) => {const v96* = tokenId/93 == 0;
+          claim(CT_Assume False)(v96, Nothing);
+          
+          return owner/48;})
+          view(Nothing).balanceOf.is(Just export (Just [v97]) => {const v99* = addr/97 == owner/48;
+          const v100* = v99 ? 1 : 0;
+          
+          return v100;})
+          view(Nothing).getApproved.is(Just export (Just [v101]) => {const v104* = tokenId/101 == 0;
+          claim(CT_Assume False)(v104, Nothing);
+          
+          return approved/47;})
+          view(Nothing).isApprovedForAll.is(Just export (Just [v105, v106]) => {const v108* = owner/48 == addr/105;
+          const v109* = map0[operator/106];
+          const v111* = fromSome(m/109, false );
+          const v112* = v108 ? v111 : false;
+          
+          return v112;})
+          const v429* = thisConsensusSecs/472;
+          const v432* = thisConsensusSecs/472;
+          const v433* = UInt.max - base/432;
+          const v434* = v433 - 5;
+          const v435* = v434 >= 0;
+          let v436;
+          v436 = null;
+          const v437* = base/429 + 5;
+          const v438* = <Right v437>;
+          commit();
+          only(Left "safeTransferFrom") {
+            const v187* = selfAddress("safeTransferFrom", True, 186 )();
+            let v188;
+            const v191* = protect<Tuple(Address, Address, UInt)>("safeTransferFrom".interact.in());
+            const v192* = .api43.dom/191[0];
+            const v193* = .api43.dom/191[1];
+            const v194* = .api43.dom/191[2];
+            let v195;
+            const v197* = addr/192 == owner/48;
+            const v198* = addr/192 == approved/47;
+            const v199* = v197 ? true : v198;
+            const v200* = map0[addr/192];
+            const v202* = fromSome(m/200, false );
+            const v203* = v199 ? true : v202;
+            claim(CT_Assume False)(v203, Nothing);
+            const v205* = tokenId/194 == 0;
+            claim(CT_Assume False)(v205, Nothing);
+            v195 = null;
+            const v206* = {
+              msg = .api43.dom/191};
+            const v207* = <safeTransferFrom0_113 msg/191>;
+            const v208* = {
+              msg = v207,
+              when = true};
+            v188 = null;
+             };
+          only(Left "transferFrom") {
+            const v210* = selfAddress("transferFrom", True, 209 )();
+            let v211;
+            const v214* = protect<Tuple(Address, Address, UInt)>("transferFrom".interact.in());
+            const v215* = .api44.dom/214[0];
+            const v216* = .api44.dom/214[1];
+            const v217* = .api44.dom/214[2];
+            let v218;
+            const v220* = addr/215 == owner/48;
+            const v221* = addr/215 == approved/47;
+            const v222* = v220 ? true : v221;
+            const v223* = map0[addr/215];
+            const v225* = fromSome(m/223, false );
+            const v226* = v222 ? true : v225;
+            claim(CT_Assume False)(v226, Nothing);
+            const v228* = tokenId/217 == 0;
+            claim(CT_Assume False)(v228, Nothing);
+            v218 = null;
+            const v229* = {
+              msg = .api44.dom/214};
+            const v230* = <transferFrom0_113 msg/214>;
+            const v231* = {
+              msg = v230,
+              when = true};
+            v211 = null;
+             };
+          only(Left "approve") {
+            const v233* = selfAddress("approve", True, 232 )();
+            let v234;
+            const v237* = protect<Tuple(Address, UInt)>("approve".interact.in());
+            const v238* = .api45.dom/237[0];
+            const v239* = .api45.dom/237[1];
+            let v240;
+            const v242* = addr/233 == owner/48;
+            const v243* = addr/233 == approved/47;
+            const v244* = v242 ? true : v243;
+            const v245* = map0[addr/233];
+            const v247* = fromSome(m/245, false );
+            const v248* = v244 ? true : v247;
+            claim(CT_Assume False)(v248, Nothing);
+            const v250* = tokenId/239 == 0;
+            claim(CT_Assume False)(v250, Nothing);
+            v240 = null;
+            const v251* = {
+              msg = .api45.dom/237};
+            const v252* = <approve0_113 msg/237>;
+            const v253* = {
+              msg = v252,
+              when = true};
+            v234 = null;
+             };
+          only(Left "setApprovalForAll") {
+            const v255* = selfAddress("setApprovalForAll", True, 254 )();
+            let v256;
+            const v259* = protect<Tuple(Address, Bool)>("setApprovalForAll".interact.in());
+            const v260* = .api46.dom/259[0];
+            const v261* = .api46.dom/259[1];
+            let v262;
+            const v264* = addr/255 == owner/48;
+            const v265* = addr/255 == approved/47;
+            const v266* = v264 ? true : v265;
+            const v267* = map0[addr/255];
+            const v269* = fromSome(m/267, false );
+            const v270* = v266 ? true : v269;
+            claim(CT_Assume False)(v270, Nothing);
+            v262 = null;
+            const v271* = {
+              msg = .api46.dom/259};
+            const v272* = <setApprovalForAll0_113 msg/259>;
+            const v273* = {
+              msg = v272,
+              when = true};
+            v256 = null;
+             };
+          only(Left "approve") {
+            const v274* = <approve0_113 msg/237>;
+            const v277* = .api45.dom/237[0];
+            const v278* = .api45.dom/237[1];
+             };
+          only(Left "safeTransferFrom") {
+            const v280* = <safeTransferFrom0_113 msg/191>;
+            const v283* = .api43.dom/191[0];
+            const v284* = .api43.dom/191[1];
+            const v285* = .api43.dom/191[2];
+             };
+          only(Left "setApprovalForAll") {
+            const v287* = <setApprovalForAll0_113 msg/259>;
+            const v290* = .api46.dom/259[0];
+            const v291* = .api46.dom/259[1];
+             };
+          only(Left "transferFrom") {
+            const v293* = <transferFrom0_113 msg/214>;
+            const v296* = .api44.dom/214[0];
+            const v297* = .api44.dom/214[1];
+            const v298* = .api44.dom/214[2];
+             };
+          publish(@thisConsensusTime/469)
+            .timeout(Right v437, {
+              only(Left "Creator") {
+                 };
+              publish(@thisConsensusTime/469)
+                .case("Creator").send({
+                  isClass = False,
+                  msg = [],
+                  pay = [0, ],
+                  when = true})
+                .recv({
+                  didSend = v445,
+                  from = v440,
+                  msg = [],
+                  secs = v444,
+                  time = v443}){
+                  timeOrder((Just thisConsensusTime/469, thisConsensusTime/443 ), (Just thisConsensusSecs/472, thisConsensusSecs/444 ) );
+                  const v441* = balance(0)/475;
+                  checkPay(0, Nothing);
+                  const v442* = v26 == v440;
+                  claim(CT_Require)(v442, Just "sender correct");
+                  const v446* = [owner/48, approved/47 ];
+                  const v439* = v446;
+                  {
+                    v47 = approved/47,
+                    v48 = owner/48,
+                    v469 = thisConsensusTime/443,
+                    v470 = thisConsensusTime/469,
+                    v471 = thisConsensusTime/469,
+                    v472 = thisConsensusSecs/444,
+                    v473 = thisConsensusSecs/472,
+                    v474 = v437,
+                    v475 = balance(0)/441}
+                  continue; }
+                 } )
+            .case("approve").send({
+              isClass = True,
+              msg = [v274],
+              pay = [0, ],
+              when = true})
+            .case("safeTransferFrom").send({
+              isClass = True,
+              msg = [v280],
+              pay = [0, ],
+              when = true})
+            .case("setApprovalForAll").send({
+              isClass = True,
+              msg = [v287],
+              pay = [0, ],
+              when = true})
+            .case("transferFrom").send({
+              isClass = True,
+              msg = [v293],
+              pay = [0, ],
+              when = true})
+            .recv({
+              didSend = v338,
+              from = v300,
+              msg = [v301],
+              secs = v337,
+              time = v336}){
+              timeOrder((Just thisConsensusTime/469, thisConsensusTime/336 ), (Just thisConsensusSecs/472, thisConsensusSecs/337 ) );
+              switch (v301) {
+                case approve0_113 as v304/True: {
+                  let v305;
+                  v305 = null;
+                  const v303* = null;
+                  let v312;
+                  local switch (v301) {
+                    case approve0_113 as v313/True: {
+                      const v315* = .api45.dom/313[0];
+                      const v316* = .api45.dom/313[1];
+                      v312 = 0;
+                       }
+                    case safeTransferFrom0_113 as v318/True: {
+                      const v320* = .api43.dom/318[0];
+                      const v321* = .api43.dom/318[1];
+                      const v322* = .api43.dom/318[2];
+                      v312 = 0;
+                       }
+                    case setApprovalForAll0_113 as v324/True: {
+                      const v326* = .api46.dom/324[0];
+                      const v327* = .api46.dom/324[1];
+                      v312 = 0;
+                       }
+                    case transferFrom0_113 as v329/True: {
+                      const v331* = .api44.dom/329[0];
+                      const v332* = .api44.dom/329[1];
+                      const v333* = .api44.dom/329[2];
+                      v312 = 0;
+                       } }
+                  const v335* = balance(0)/475;
+                  checkPay(0, Nothing);
+                  switch (v301) {
+                    case approve0_113 as v339/True: {
+                      setApiDetails("approve", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just approve0_113, AIC_Case );
+                      const v341* = .api45.dom/339[0];
+                      const v342* = .api45.dom/339[1];
+                      const v344* = addr/300 == owner/48;
+                      const v345* = addr/300 == approved/47;
+                      const v346* = v344 ? true : v345;
+                      const v347* = map0[addr/300];
+                      const v349* = fromSome(m/347, false );
+                      const v350* = v346 ? true : v349;
+                      claim(CT_Require)(v350, Nothing);
+                      const v352* = tokenId/342 == 0;
+                      claim(CT_Require)(v352, Nothing);
+                      const v354* = true;
+                      const v355* = emitLog(api("approve"))(v354 );
+                      only(Left "approve") {
+                        const v357* = selfAddress("approve", True, 356 )();
+                        let v358;
+                        const v359* = didPublish/338;
+                        local if didPublish/359 then {
+                          protect<Null>("approve".interact.out(.api45.dom/339, .api45.rngl/355 ));
+                           }
+                        else {
+                           };
+                        v358 = null;
+                         };
+                      const v353* = null;
+                      emitLog(event(Nothing, Approval))(this/300, approvalAddress/341, tokenId/342 );
+                      const v360* = [owner/48, approvalAddress/341 ];
+                      {
+                        v47 = approved/341,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case safeTransferFrom0_113 as v361/True: {
+                      setApiDetails("safeTransferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just safeTransferFrom0_113, AIC_Case );
+                      const v363* = .api43.dom/361[0];
+                      const v364* = .api43.dom/361[1];
+                      const v365* = .api43.dom/361[2];
+                      const v367* = addr/363 == owner/48;
+                      const v368* = addr/363 == approved/47;
+                      const v369* = v367 ? true : v368;
+                      const v370* = map0[addr/363];
+                      const v372* = fromSome(m/370, false );
+                      const v373* = v369 ? true : v372;
+                      claim(CT_Require)(v373, Nothing);
+                      const v375* = tokenId/365 == 0;
+                      claim(CT_Require)(v375, Nothing);
+                      const v377* = true;
+                      const v378* = emitLog(api("safeTransferFrom"))(v377 );
+                      only(Left "safeTransferFrom") {
+                        const v380* = selfAddress("safeTransferFrom", True, 379 )();
+                        let v381;
+                        const v382* = didPublish/338;
+                        local if didPublish/382 then {
+                          protect<Null>("safeTransferFrom".interact.out(.api43.dom/361, .api43.rngl/378 ));
+                           }
+                        else {
+                           };
+                        v381 = null;
+                         };
+                      const v376* = null;
+                      emitLog(event(Nothing, Transfer))(sender/363, receiver/364, tokenId/365 );
+                      const v383* = [receiver/364, receiver/364 ];
+                      {
+                        v47 = approved/364,
+                        v48 = owner/364,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case setApprovalForAll0_113 as v384/True: {
+                      setApiDetails("setApprovalForAll", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just setApprovalForAll0_113, AIC_Case );
+                      const v386* = .api46.dom/384[0];
+                      const v387* = .api46.dom/384[1];
+                      const v389* = addr/300 == owner/48;
+                      const v390* = addr/300 == approved/47;
+                      const v391* = v389 ? true : v390;
+                      const v392* = map0[addr/300];
+                      const v394* = fromSome(m/392, false );
+                      const v395* = v391 ? true : v394;
+                      claim(CT_Require)(v395, Nothing);
+                      const v397* = true;
+                      const v398* = emitLog(api("setApprovalForAll"))(v397 );
+                      only(Left "setApprovalForAll") {
+                        const v400* = selfAddress("setApprovalForAll", True, 399 )();
+                        let v401;
+                        const v402* = didPublish/338;
+                        local if didPublish/402 then {
+                          protect<Null>("setApprovalForAll".interact.out(.api46.dom/384, .api46.rngl/398 ));
+                           }
+                        else {
+                           };
+                        v401 = null;
+                         };
+                      const v396* = null;
+                      map0[operator/386] = isApproved/387;
+                      emitLog(event(Nothing, ApprovalForAll))(this/300, operator/386, isApproved/387 );
+                      const v403* = [owner/48, approved/47 ];
+                      {
+                        v47 = approved/47,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case transferFrom0_113 as v404/True: {
+                      setApiDetails("transferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just transferFrom0_113, AIC_Case );
+                      const v406* = .api44.dom/404[0];
+                      const v407* = .api44.dom/404[1];
+                      const v408* = .api44.dom/404[2];
+                      const v410* = addr/406 == owner/48;
+                      const v411* = addr/406 == approved/47;
+                      const v412* = v410 ? true : v411;
+                      const v413* = map0[addr/406];
+                      const v415* = fromSome(m/413, false );
+                      const v416* = v412 ? true : v415;
+                      claim(CT_Require)(v416, Nothing);
+                      const v418* = tokenId/408 == 0;
+                      claim(CT_Require)(v418, Nothing);
+                      const v420* = true;
+                      const v421* = emitLog(api("transferFrom"))(v420 );
+                      only(Left "transferFrom") {
+                        const v423* = selfAddress("transferFrom", True, 422 )();
+                        let v424;
+                        const v425* = didPublish/338;
+                        local if didPublish/425 then {
+                          protect<Null>("transferFrom".interact.out(.api44.dom/404, .api44.rngl/421 ));
+                           }
+                        else {
+                           };
+                        v424 = null;
+                         };
+                      const v419* = null;
+                      emitLog(event(Nothing, Transfer))(sender/406, receiver/407, tokenId/408 );
+                      const v426* = [receiver/407, receiver/407 ];
+                      {
+                        v47 = approved/407,
+                        v48 = owner/407,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; } } }
+                case safeTransferFrom0_113 as v306/True: {
+                  let v307;
+                  v307 = null;
+                  const v303* = null;
+                  let v312;
+                  local switch (v301) {
+                    case approve0_113 as v313/True: {
+                      const v315* = .api45.dom/313[0];
+                      const v316* = .api45.dom/313[1];
+                      v312 = 0;
+                       }
+                    case safeTransferFrom0_113 as v318/True: {
+                      const v320* = .api43.dom/318[0];
+                      const v321* = .api43.dom/318[1];
+                      const v322* = .api43.dom/318[2];
+                      v312 = 0;
+                       }
+                    case setApprovalForAll0_113 as v324/True: {
+                      const v326* = .api46.dom/324[0];
+                      const v327* = .api46.dom/324[1];
+                      v312 = 0;
+                       }
+                    case transferFrom0_113 as v329/True: {
+                      const v331* = .api44.dom/329[0];
+                      const v332* = .api44.dom/329[1];
+                      const v333* = .api44.dom/329[2];
+                      v312 = 0;
+                       } }
+                  const v335* = balance(0)/475;
+                  checkPay(0, Nothing);
+                  switch (v301) {
+                    case approve0_113 as v339/True: {
+                      setApiDetails("approve", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just approve0_113, AIC_Case );
+                      const v341* = .api45.dom/339[0];
+                      const v342* = .api45.dom/339[1];
+                      const v344* = addr/300 == owner/48;
+                      const v345* = addr/300 == approved/47;
+                      const v346* = v344 ? true : v345;
+                      const v347* = map0[addr/300];
+                      const v349* = fromSome(m/347, false );
+                      const v350* = v346 ? true : v349;
+                      claim(CT_Require)(v350, Nothing);
+                      const v352* = tokenId/342 == 0;
+                      claim(CT_Require)(v352, Nothing);
+                      const v354* = true;
+                      const v355* = emitLog(api("approve"))(v354 );
+                      only(Left "approve") {
+                        const v357* = selfAddress("approve", True, 356 )();
+                        let v358;
+                        const v359* = didPublish/338;
+                        local if didPublish/359 then {
+                          protect<Null>("approve".interact.out(.api45.dom/339, .api45.rngl/355 ));
+                           }
+                        else {
+                           };
+                        v358 = null;
+                         };
+                      const v353* = null;
+                      emitLog(event(Nothing, Approval))(this/300, approvalAddress/341, tokenId/342 );
+                      const v360* = [owner/48, approvalAddress/341 ];
+                      {
+                        v47 = approved/341,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case safeTransferFrom0_113 as v361/True: {
+                      setApiDetails("safeTransferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just safeTransferFrom0_113, AIC_Case );
+                      const v363* = .api43.dom/361[0];
+                      const v364* = .api43.dom/361[1];
+                      const v365* = .api43.dom/361[2];
+                      const v367* = addr/363 == owner/48;
+                      const v368* = addr/363 == approved/47;
+                      const v369* = v367 ? true : v368;
+                      const v370* = map0[addr/363];
+                      const v372* = fromSome(m/370, false );
+                      const v373* = v369 ? true : v372;
+                      claim(CT_Require)(v373, Nothing);
+                      const v375* = tokenId/365 == 0;
+                      claim(CT_Require)(v375, Nothing);
+                      const v377* = true;
+                      const v378* = emitLog(api("safeTransferFrom"))(v377 );
+                      only(Left "safeTransferFrom") {
+                        const v380* = selfAddress("safeTransferFrom", True, 379 )();
+                        let v381;
+                        const v382* = didPublish/338;
+                        local if didPublish/382 then {
+                          protect<Null>("safeTransferFrom".interact.out(.api43.dom/361, .api43.rngl/378 ));
+                           }
+                        else {
+                           };
+                        v381 = null;
+                         };
+                      const v376* = null;
+                      emitLog(event(Nothing, Transfer))(sender/363, receiver/364, tokenId/365 );
+                      const v383* = [receiver/364, receiver/364 ];
+                      {
+                        v47 = approved/364,
+                        v48 = owner/364,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case setApprovalForAll0_113 as v384/True: {
+                      setApiDetails("setApprovalForAll", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just setApprovalForAll0_113, AIC_Case );
+                      const v386* = .api46.dom/384[0];
+                      const v387* = .api46.dom/384[1];
+                      const v389* = addr/300 == owner/48;
+                      const v390* = addr/300 == approved/47;
+                      const v391* = v389 ? true : v390;
+                      const v392* = map0[addr/300];
+                      const v394* = fromSome(m/392, false );
+                      const v395* = v391 ? true : v394;
+                      claim(CT_Require)(v395, Nothing);
+                      const v397* = true;
+                      const v398* = emitLog(api("setApprovalForAll"))(v397 );
+                      only(Left "setApprovalForAll") {
+                        const v400* = selfAddress("setApprovalForAll", True, 399 )();
+                        let v401;
+                        const v402* = didPublish/338;
+                        local if didPublish/402 then {
+                          protect<Null>("setApprovalForAll".interact.out(.api46.dom/384, .api46.rngl/398 ));
+                           }
+                        else {
+                           };
+                        v401 = null;
+                         };
+                      const v396* = null;
+                      map0[operator/386] = isApproved/387;
+                      emitLog(event(Nothing, ApprovalForAll))(this/300, operator/386, isApproved/387 );
+                      const v403* = [owner/48, approved/47 ];
+                      {
+                        v47 = approved/47,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case transferFrom0_113 as v404/True: {
+                      setApiDetails("transferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just transferFrom0_113, AIC_Case );
+                      const v406* = .api44.dom/404[0];
+                      const v407* = .api44.dom/404[1];
+                      const v408* = .api44.dom/404[2];
+                      const v410* = addr/406 == owner/48;
+                      const v411* = addr/406 == approved/47;
+                      const v412* = v410 ? true : v411;
+                      const v413* = map0[addr/406];
+                      const v415* = fromSome(m/413, false );
+                      const v416* = v412 ? true : v415;
+                      claim(CT_Require)(v416, Nothing);
+                      const v418* = tokenId/408 == 0;
+                      claim(CT_Require)(v418, Nothing);
+                      const v420* = true;
+                      const v421* = emitLog(api("transferFrom"))(v420 );
+                      only(Left "transferFrom") {
+                        const v423* = selfAddress("transferFrom", True, 422 )();
+                        let v424;
+                        const v425* = didPublish/338;
+                        local if didPublish/425 then {
+                          protect<Null>("transferFrom".interact.out(.api44.dom/404, .api44.rngl/421 ));
+                           }
+                        else {
+                           };
+                        v424 = null;
+                         };
+                      const v419* = null;
+                      emitLog(event(Nothing, Transfer))(sender/406, receiver/407, tokenId/408 );
+                      const v426* = [receiver/407, receiver/407 ];
+                      {
+                        v47 = approved/407,
+                        v48 = owner/407,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; } } }
+                case setApprovalForAll0_113 as v308/True: {
+                  let v309;
+                  v309 = null;
+                  const v303* = null;
+                  let v312;
+                  local switch (v301) {
+                    case approve0_113 as v313/True: {
+                      const v315* = .api45.dom/313[0];
+                      const v316* = .api45.dom/313[1];
+                      v312 = 0;
+                       }
+                    case safeTransferFrom0_113 as v318/True: {
+                      const v320* = .api43.dom/318[0];
+                      const v321* = .api43.dom/318[1];
+                      const v322* = .api43.dom/318[2];
+                      v312 = 0;
+                       }
+                    case setApprovalForAll0_113 as v324/True: {
+                      const v326* = .api46.dom/324[0];
+                      const v327* = .api46.dom/324[1];
+                      v312 = 0;
+                       }
+                    case transferFrom0_113 as v329/True: {
+                      const v331* = .api44.dom/329[0];
+                      const v332* = .api44.dom/329[1];
+                      const v333* = .api44.dom/329[2];
+                      v312 = 0;
+                       } }
+                  const v335* = balance(0)/475;
+                  checkPay(0, Nothing);
+                  switch (v301) {
+                    case approve0_113 as v339/True: {
+                      setApiDetails("approve", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just approve0_113, AIC_Case );
+                      const v341* = .api45.dom/339[0];
+                      const v342* = .api45.dom/339[1];
+                      const v344* = addr/300 == owner/48;
+                      const v345* = addr/300 == approved/47;
+                      const v346* = v344 ? true : v345;
+                      const v347* = map0[addr/300];
+                      const v349* = fromSome(m/347, false );
+                      const v350* = v346 ? true : v349;
+                      claim(CT_Require)(v350, Nothing);
+                      const v352* = tokenId/342 == 0;
+                      claim(CT_Require)(v352, Nothing);
+                      const v354* = true;
+                      const v355* = emitLog(api("approve"))(v354 );
+                      only(Left "approve") {
+                        const v357* = selfAddress("approve", True, 356 )();
+                        let v358;
+                        const v359* = didPublish/338;
+                        local if didPublish/359 then {
+                          protect<Null>("approve".interact.out(.api45.dom/339, .api45.rngl/355 ));
+                           }
+                        else {
+                           };
+                        v358 = null;
+                         };
+                      const v353* = null;
+                      emitLog(event(Nothing, Approval))(this/300, approvalAddress/341, tokenId/342 );
+                      const v360* = [owner/48, approvalAddress/341 ];
+                      {
+                        v47 = approved/341,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case safeTransferFrom0_113 as v361/True: {
+                      setApiDetails("safeTransferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just safeTransferFrom0_113, AIC_Case );
+                      const v363* = .api43.dom/361[0];
+                      const v364* = .api43.dom/361[1];
+                      const v365* = .api43.dom/361[2];
+                      const v367* = addr/363 == owner/48;
+                      const v368* = addr/363 == approved/47;
+                      const v369* = v367 ? true : v368;
+                      const v370* = map0[addr/363];
+                      const v372* = fromSome(m/370, false );
+                      const v373* = v369 ? true : v372;
+                      claim(CT_Require)(v373, Nothing);
+                      const v375* = tokenId/365 == 0;
+                      claim(CT_Require)(v375, Nothing);
+                      const v377* = true;
+                      const v378* = emitLog(api("safeTransferFrom"))(v377 );
+                      only(Left "safeTransferFrom") {
+                        const v380* = selfAddress("safeTransferFrom", True, 379 )();
+                        let v381;
+                        const v382* = didPublish/338;
+                        local if didPublish/382 then {
+                          protect<Null>("safeTransferFrom".interact.out(.api43.dom/361, .api43.rngl/378 ));
+                           }
+                        else {
+                           };
+                        v381 = null;
+                         };
+                      const v376* = null;
+                      emitLog(event(Nothing, Transfer))(sender/363, receiver/364, tokenId/365 );
+                      const v383* = [receiver/364, receiver/364 ];
+                      {
+                        v47 = approved/364,
+                        v48 = owner/364,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case setApprovalForAll0_113 as v384/True: {
+                      setApiDetails("setApprovalForAll", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just setApprovalForAll0_113, AIC_Case );
+                      const v386* = .api46.dom/384[0];
+                      const v387* = .api46.dom/384[1];
+                      const v389* = addr/300 == owner/48;
+                      const v390* = addr/300 == approved/47;
+                      const v391* = v389 ? true : v390;
+                      const v392* = map0[addr/300];
+                      const v394* = fromSome(m/392, false );
+                      const v395* = v391 ? true : v394;
+                      claim(CT_Require)(v395, Nothing);
+                      const v397* = true;
+                      const v398* = emitLog(api("setApprovalForAll"))(v397 );
+                      only(Left "setApprovalForAll") {
+                        const v400* = selfAddress("setApprovalForAll", True, 399 )();
+                        let v401;
+                        const v402* = didPublish/338;
+                        local if didPublish/402 then {
+                          protect<Null>("setApprovalForAll".interact.out(.api46.dom/384, .api46.rngl/398 ));
+                           }
+                        else {
+                           };
+                        v401 = null;
+                         };
+                      const v396* = null;
+                      map0[operator/386] = isApproved/387;
+                      emitLog(event(Nothing, ApprovalForAll))(this/300, operator/386, isApproved/387 );
+                      const v403* = [owner/48, approved/47 ];
+                      {
+                        v47 = approved/47,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case transferFrom0_113 as v404/True: {
+                      setApiDetails("transferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just transferFrom0_113, AIC_Case );
+                      const v406* = .api44.dom/404[0];
+                      const v407* = .api44.dom/404[1];
+                      const v408* = .api44.dom/404[2];
+                      const v410* = addr/406 == owner/48;
+                      const v411* = addr/406 == approved/47;
+                      const v412* = v410 ? true : v411;
+                      const v413* = map0[addr/406];
+                      const v415* = fromSome(m/413, false );
+                      const v416* = v412 ? true : v415;
+                      claim(CT_Require)(v416, Nothing);
+                      const v418* = tokenId/408 == 0;
+                      claim(CT_Require)(v418, Nothing);
+                      const v420* = true;
+                      const v421* = emitLog(api("transferFrom"))(v420 );
+                      only(Left "transferFrom") {
+                        const v423* = selfAddress("transferFrom", True, 422 )();
+                        let v424;
+                        const v425* = didPublish/338;
+                        local if didPublish/425 then {
+                          protect<Null>("transferFrom".interact.out(.api44.dom/404, .api44.rngl/421 ));
+                           }
+                        else {
+                           };
+                        v424 = null;
+                         };
+                      const v419* = null;
+                      emitLog(event(Nothing, Transfer))(sender/406, receiver/407, tokenId/408 );
+                      const v426* = [receiver/407, receiver/407 ];
+                      {
+                        v47 = approved/407,
+                        v48 = owner/407,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; } } }
+                case transferFrom0_113 as v310/True: {
+                  let v311;
+                  v311 = null;
+                  const v303* = null;
+                  let v312;
+                  local switch (v301) {
+                    case approve0_113 as v313/True: {
+                      const v315* = .api45.dom/313[0];
+                      const v316* = .api45.dom/313[1];
+                      v312 = 0;
+                       }
+                    case safeTransferFrom0_113 as v318/True: {
+                      const v320* = .api43.dom/318[0];
+                      const v321* = .api43.dom/318[1];
+                      const v322* = .api43.dom/318[2];
+                      v312 = 0;
+                       }
+                    case setApprovalForAll0_113 as v324/True: {
+                      const v326* = .api46.dom/324[0];
+                      const v327* = .api46.dom/324[1];
+                      v312 = 0;
+                       }
+                    case transferFrom0_113 as v329/True: {
+                      const v331* = .api44.dom/329[0];
+                      const v332* = .api44.dom/329[1];
+                      const v333* = .api44.dom/329[2];
+                      v312 = 0;
+                       } }
+                  const v335* = balance(0)/475;
+                  checkPay(0, Nothing);
+                  switch (v301) {
+                    case approve0_113 as v339/True: {
+                      setApiDetails("approve", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just approve0_113, AIC_Case );
+                      const v341* = .api45.dom/339[0];
+                      const v342* = .api45.dom/339[1];
+                      const v344* = addr/300 == owner/48;
+                      const v345* = addr/300 == approved/47;
+                      const v346* = v344 ? true : v345;
+                      const v347* = map0[addr/300];
+                      const v349* = fromSome(m/347, false );
+                      const v350* = v346 ? true : v349;
+                      claim(CT_Require)(v350, Nothing);
+                      const v352* = tokenId/342 == 0;
+                      claim(CT_Require)(v352, Nothing);
+                      const v354* = true;
+                      const v355* = emitLog(api("approve"))(v354 );
+                      only(Left "approve") {
+                        const v357* = selfAddress("approve", True, 356 )();
+                        let v358;
+                        const v359* = didPublish/338;
+                        local if didPublish/359 then {
+                          protect<Null>("approve".interact.out(.api45.dom/339, .api45.rngl/355 ));
+                           }
+                        else {
+                           };
+                        v358 = null;
+                         };
+                      const v353* = null;
+                      emitLog(event(Nothing, Approval))(this/300, approvalAddress/341, tokenId/342 );
+                      const v360* = [owner/48, approvalAddress/341 ];
+                      {
+                        v47 = approved/341,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case safeTransferFrom0_113 as v361/True: {
+                      setApiDetails("safeTransferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just safeTransferFrom0_113, AIC_Case );
+                      const v363* = .api43.dom/361[0];
+                      const v364* = .api43.dom/361[1];
+                      const v365* = .api43.dom/361[2];
+                      const v367* = addr/363 == owner/48;
+                      const v368* = addr/363 == approved/47;
+                      const v369* = v367 ? true : v368;
+                      const v370* = map0[addr/363];
+                      const v372* = fromSome(m/370, false );
+                      const v373* = v369 ? true : v372;
+                      claim(CT_Require)(v373, Nothing);
+                      const v375* = tokenId/365 == 0;
+                      claim(CT_Require)(v375, Nothing);
+                      const v377* = true;
+                      const v378* = emitLog(api("safeTransferFrom"))(v377 );
+                      only(Left "safeTransferFrom") {
+                        const v380* = selfAddress("safeTransferFrom", True, 379 )();
+                        let v381;
+                        const v382* = didPublish/338;
+                        local if didPublish/382 then {
+                          protect<Null>("safeTransferFrom".interact.out(.api43.dom/361, .api43.rngl/378 ));
+                           }
+                        else {
+                           };
+                        v381 = null;
+                         };
+                      const v376* = null;
+                      emitLog(event(Nothing, Transfer))(sender/363, receiver/364, tokenId/365 );
+                      const v383* = [receiver/364, receiver/364 ];
+                      {
+                        v47 = approved/364,
+                        v48 = owner/364,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case setApprovalForAll0_113 as v384/True: {
+                      setApiDetails("setApprovalForAll", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just setApprovalForAll0_113, AIC_Case );
+                      const v386* = .api46.dom/384[0];
+                      const v387* = .api46.dom/384[1];
+                      const v389* = addr/300 == owner/48;
+                      const v390* = addr/300 == approved/47;
+                      const v391* = v389 ? true : v390;
+                      const v392* = map0[addr/300];
+                      const v394* = fromSome(m/392, false );
+                      const v395* = v391 ? true : v394;
+                      claim(CT_Require)(v395, Nothing);
+                      const v397* = true;
+                      const v398* = emitLog(api("setApprovalForAll"))(v397 );
+                      only(Left "setApprovalForAll") {
+                        const v400* = selfAddress("setApprovalForAll", True, 399 )();
+                        let v401;
+                        const v402* = didPublish/338;
+                        local if didPublish/402 then {
+                          protect<Null>("setApprovalForAll".interact.out(.api46.dom/384, .api46.rngl/398 ));
+                           }
+                        else {
+                           };
+                        v401 = null;
+                         };
+                      const v396* = null;
+                      map0[operator/386] = isApproved/387;
+                      emitLog(event(Nothing, ApprovalForAll))(this/300, operator/386, isApproved/387 );
+                      const v403* = [owner/48, approved/47 ];
+                      {
+                        v47 = approved/47,
+                        v48 = owner/48,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; }
+                    case transferFrom0_113 as v404/True: {
+                      setApiDetails("transferFrom", [Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})], Just transferFrom0_113, AIC_Case );
+                      const v406* = .api44.dom/404[0];
+                      const v407* = .api44.dom/404[1];
+                      const v408* = .api44.dom/404[2];
+                      const v410* = addr/406 == owner/48;
+                      const v411* = addr/406 == approved/47;
+                      const v412* = v410 ? true : v411;
+                      const v413* = map0[addr/406];
+                      const v415* = fromSome(m/413, false );
+                      const v416* = v412 ? true : v415;
+                      claim(CT_Require)(v416, Nothing);
+                      const v418* = tokenId/408 == 0;
+                      claim(CT_Require)(v418, Nothing);
+                      const v420* = true;
+                      const v421* = emitLog(api("transferFrom"))(v420 );
+                      only(Left "transferFrom") {
+                        const v423* = selfAddress("transferFrom", True, 422 )();
+                        let v424;
+                        const v425* = didPublish/338;
+                        local if didPublish/425 then {
+                          protect<Null>("transferFrom".interact.out(.api44.dom/404, .api44.rngl/421 ));
+                           }
+                        else {
+                           };
+                        v424 = null;
+                         };
+                      const v419* = null;
+                      emitLog(event(Nothing, Transfer))(sender/406, receiver/407, tokenId/408 );
+                      const v426* = [receiver/407, receiver/407 ];
+                      {
+                        v47 = approved/407,
+                        v48 = owner/407,
+                        v469 = thisConsensusTime/336,
+                        v470 = thisConsensusTime/469,
+                        v471 = thisConsensusTime/469,
+                        v472 = thisConsensusSecs/337,
+                        v473 = thisConsensusSecs/472,
+                        v474 = v437,
+                        v475 = balance(0)/335}
+                      continue; } } } } }
+             }
+        view(Nothing).ownerOf.is(Just export (Just [v447]) => {const v450* = tokenId/447 == 0;
+        claim(CT_Assume False)(v450, Nothing);
+        
+        return owner/48;})
+        view(Nothing).balanceOf.is(Just export (Just [v451]) => {const v453* = addr/451 == owner/48;
+        const v454* = v453 ? 1 : 0;
+        
+        return v454;})
+        view(Nothing).getApproved.is(Just export (Just [v455]) => {const v458* = tokenId/455 == 0;
+        claim(CT_Assume False)(v458, Nothing);
+        
+        return approved/47;})
+        view(Nothing).isApprovedForAll.is(Just export (Just [v459, v460]) => {const v462* = owner/48 == addr/459;
+        const v463* = map0[operator/460];
+        const v465* = fromSome(m/463, false );
+        const v466* = v462 ? v465 : false;
+        
+        return v466;})
+        const v467* = balance(0)/475;
+        const v468* = 0 == balance(0)/467;
+        claim(CT_Assert)(v468, Just "balance zero at application exit");
+        commit();
+        exit(); }
+       }
+  

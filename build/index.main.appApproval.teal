@@ -1,0 +1,1075 @@
+#pragma version 5
+int 0
+store 0 // GV_txnCounter :: UInt
+txn ApplicationID
+bz alloc
+byte base64()
+app_global_get
+dup
+int 0
+extract_uint64
+store 1 // GV_currentStep :: UInt
+int 8
+extract_uint64
+store 2 // GV_currentTime :: UInt
+txn OnCompletion
+int OptIn
+==
+bz normal
+txn Sender
+int 2
+bzero
+int 1
+bzero
+swap
+app_local_put
+b checkSize
+normal:
+txna ApplicationArgs 0
+btoi
+preamble:
+dup
+bz publish
+api:
+int 0
+store 3 // GV_argTime :: UInt
+int 1
+store 5 // GV_wasApi :: Bool
+dup
+int 2246204989
+<
+bnz l0_api_lt_2246204989
+dup
+int 3823442786
+<
+bnz l1_api_lt_3823442786
+int 3823442786
+==
+assert
+
+  // { setApprovalForAll
+  // API: setApprovalForAll(address,byte)byte
+  //  ui: 3823442786
+  txna ApplicationArgs 1
+  txna ApplicationArgs 2
+  concat
+  store 255 // v1651 :: Tuple(Address, Bool)
+  byte base64(Ag==)
+  load 255 // v1651 :: Tuple(Address, Bool)
+  concat
+  int 39
+  bzero
+  concat
+  store 4 // GV_argMsg :: Null
+  b publish3
+  // setApprovalForAll }
+
+l1_api_lt_3823442786:
+int 2246204989
+==
+assert
+
+  // { safeTransferFrom
+  // API: safeTransferFrom(address,address,uint64)byte
+  //  ui: 2246204989
+  txna ApplicationArgs 1
+  txna ApplicationArgs 2
+  concat
+  txna ApplicationArgs 3
+  concat
+  store 255 // v1652 :: Tuple(Address, Address, UInt)
+  byte base64(AQ==)
+  load 255 // v1652 :: Tuple(Address, Address, UInt)
+  concat
+  store 4 // GV_argMsg :: Null
+  b publish3
+  // safeTransferFrom }
+
+l0_api_lt_2246204989:
+dup
+int 1176846803
+<
+bnz l2_api_lt_1176846803
+int 1176846803
+==
+assert
+
+  // { approve
+  // API: approve(address,uint64)byte
+  //  ui: 1176846803
+  txna ApplicationArgs 1
+  txna ApplicationArgs 2
+  concat
+  store 255 // v1653 :: Tuple(Address, UInt)
+  int 1
+  bzero
+  load 255 // v1653 :: Tuple(Address, UInt)
+  concat
+  global ZeroAddress
+  concat
+  store 4 // GV_argMsg :: Null
+  b publish3
+  // approve }
+
+l2_api_lt_1176846803:
+int 501225749
+==
+assert
+
+  // { transferFrom
+  // API: transferFrom(address,address,uint64)byte
+  //  ui: 501225749
+  txna ApplicationArgs 1
+  txna ApplicationArgs 2
+  concat
+  txna ApplicationArgs 3
+  concat
+  store 255 // v1654 :: Tuple(Address, Address, UInt)
+  byte base64(Aw==)
+  load 255 // v1654 :: Tuple(Address, Address, UInt)
+  concat
+  store 4 // GV_argMsg :: Null
+  b publish3
+  // transferFrom }
+
+publish:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+store 3 // GV_argTime :: UInt
+txna ApplicationArgs 3
+store 4 // GV_argMsg :: Null
+dup
+int 2
+<
+bnz l3_publish_lt_2
+dup
+int 3
+<
+bnz l4_publish_lt_3
+dup
+int 4
+<
+bnz l5_publish_lt_4
+int 4
+==
+assert
+
+  // { publish4
+  publish4:
+  // check step
+  int 4
+  load 1 // GV_currentStep :: UInt
+  ==
+  assert
+  // check time
+  load 3 // GV_argTime :: UInt
+  dup
+  int 0
+  ==
+  swap
+  load 2 // GV_currentTime :: UInt
+  ==
+  ||
+  assert
+  int 1
+  bzero
+  app_global_get
+  byte base64(AQ==)
+  app_global_get
+  concat
+  byte base64(Ag==)
+  app_global_get
+  concat
+  dup
+  extract 0 32
+  store 255 // v484 :: Address
+  dup
+  extract 32 32
+  store 254 // name/485 :: Bytes(32)
+  dup
+  extract 64 32
+  store 253 // symbol/486 :: Bytes(32)
+  dup
+  extract 96 128
+  store 252 // uri/487 :: Bytes(128)
+  dup
+  extract 224 32
+  store 251 // approved/497 :: Address
+  dup
+  int 256
+  int 32
+  extract3
+  store 250 // owner/498 :: Address
+  dup
+  int 288
+  int 8
+  extract3
+  btoi
+  store 249 // v527 :: UInt
+  pop
+  load 4 // GV_argMsg :: Null
+  dup
+  len
+  int 0
+  ==
+  assert
+  pop
+  byte base64(kSc08w==)
+  log // up to 4 bytes
+  global LatestTimestamp
+  load 249 // v527 :: UInt
+  >=
+  assert
+  // ^ CheckPay
+  // at ./index.rsh:183:15:dot
+  // at ./index.rsh:182:34:application call to [unknown function] (defined at: ./index.rsh:182:34:function exp)
+  load 255 // v484 :: Address
+  txn Sender
+  ==
+  assert
+  // ^ Claim: sender correct
+  // at ./index.rsh:183:15:dot
+  // at ./index.rsh:182:34:application call to [unknown function] (defined at: ./index.rsh:182:34:function exp)
+  load 255 // v484 :: Address
+  load 254 // name/485 :: Bytes(32)
+  concat
+  load 253 // symbol/486 :: Bytes(32)
+  concat
+  load 252 // uri/487 :: Bytes(128)
+  concat
+  load 251 // approved/497 :: Address
+  load 250 // owner/498 :: Address
+  concat
+  global Round
+  itob
+  concat
+  global LatestTimestamp
+  itob
+  concat
+  b loopBody2
+  // publish4 }
+
+l5_publish_lt_4:
+pop
+
+  // { publish3
+  publish3:
+  // check step
+  int 4
+  load 1 // GV_currentStep :: UInt
+  ==
+  assert
+  // check time
+  load 3 // GV_argTime :: UInt
+  dup
+  int 0
+  ==
+  swap
+  load 2 // GV_currentTime :: UInt
+  ==
+  ||
+  assert
+  int 1
+  bzero
+  app_global_get
+  byte base64(AQ==)
+  app_global_get
+  concat
+  byte base64(Ag==)
+  app_global_get
+  concat
+  dup
+  extract 0 32
+  store 255 // v484 :: Address
+  dup
+  extract 32 32
+  store 254 // name/485 :: Bytes(32)
+  dup
+  extract 64 32
+  store 253 // symbol/486 :: Bytes(32)
+  dup
+  extract 96 128
+  store 252 // uri/487 :: Bytes(128)
+  dup
+  extract 224 32
+  store 251 // approved/497 :: Address
+  dup
+  int 256
+  int 32
+  extract3
+  store 250 // owner/498 :: Address
+  dup
+  int 288
+  int 8
+  extract3
+  btoi
+  store 249 // v527 :: UInt
+  pop
+  load 4 // GV_argMsg :: Null
+  dup
+  len
+  int 73
+  ==
+  assert
+  dup
+  store 248 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})
+  pop
+  byte base64(PvziwQ==)
+  load 248 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})
+  concat
+  log // up to 77 bytes
+  global LatestTimestamp
+  load 249 // v527 :: UInt
+  <
+  assert
+  load 248 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)})
+  dup
+  store 247 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)}) for switch
+  int 0
+  getbyte
+  dup
+  int 2
+  <
+  bnz l6_Switch_lt_2
+  dup
+  int 3
+  <
+  bnz l7_Switch_lt_3
+  int 3
+  ==
+  assert
+
+    // { l8_Switch_transferFrom0_113
+    l8_Switch_transferFrom0_113:
+    load 247 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)}) for switch
+    extract 1 72
+    store 246 // data_id/876 :: Tuple(Address, Address, UInt)
+    // ^ CheckPay
+    // at ./index.rsh:78:43:dot
+    load 246 // data_id/876 :: Tuple(Address, Address, UInt)
+    extract 0 32
+    store 245 // v947 :: Address
+    load 246 // data_id/876 :: Tuple(Address, Address, UInt)
+    extract 32 32
+    store 244 // v948 :: Address
+    load 246 // data_id/876 :: Tuple(Address, Address, UInt)
+    int 64
+    extract_uint64
+    store 243 // v949 :: UInt
+    load 245 // v947 :: Address
+    load 250 // owner/498 :: Address
+    ==
+    load 245 // v947 :: Address
+    load 251 // approved/497 :: Address
+    ==
+    ||
+    int 0
+    load 245 // v947 :: Address
+    dup
+    txn ApplicationID
+    app_opted_in
+    bnz l10_mapLoadDo
+    l11_mapLoadDef:
+    pop
+    int 2
+    bzero
+    b l9_mapLoadK
+    l10_mapLoadDo:
+    int 1
+    bzero
+    app_local_get
+    l9_mapLoadK:
+    dup
+    store 242 // fromSome object
+    extract 1 1
+    btoi
+    load 242 // fromSome object
+    int 0
+    getbyte
+    select
+    ||
+    assert
+    // ^ Claim
+    // at ./index.rsh:136:16:application
+    // at ./index.rsh:135:7:application call to [unknown function] (defined at: ./index.rsh:135:7:function exp)
+    load 243 // v949 :: UInt
+    int 0
+    ==
+    assert
+    // ^ Claim
+    // at ./index.rsh:137:16:application
+    // at ./index.rsh:135:7:application call to [unknown function] (defined at: ./index.rsh:135:7:function exp)
+    byte base64(AAAAAAAAA70=)
+    int 1
+    itob // bool
+    substring 7 8
+    concat
+    log // up to 9 bytes
+    int 1
+    dup
+    itob // bool
+    substring 7 8
+    store 6 // GV_apiRet :: Null
+    byte base64(seE0rA==)
+    load 245 // v947 :: Address
+    concat
+    load 244 // v948 :: Address
+    concat
+    load 243 // v949 :: UInt
+    itob
+    concat
+    log // up to 76 bytes
+    byte base64()
+    load 255 // v484 :: Address
+    load 254 // name/485 :: Bytes(32)
+    concat
+    load 253 // symbol/486 :: Bytes(32)
+    concat
+    load 252 // uri/487 :: Bytes(128)
+    concat
+    load 244 // v948 :: Address
+    dup
+    concat
+    global Round
+    itob
+    concat
+    global LatestTimestamp
+    itob
+    concat
+    b loopBody2
+    // l8_Switch_transferFrom0_113 }
+
+  l7_Switch_lt_3:
+  pop
+
+    // { l12_Switch_setApprovalForAll0_113
+    l12_Switch_setApprovalForAll0_113:
+    load 247 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)}) for switch
+    extract 1 33
+    store 246 // data_id/788 :: Tuple(Address, Bool)
+    // ^ CheckPay
+    // at ./index.rsh:78:43:dot
+    load 246 // data_id/788 :: Tuple(Address, Bool)
+    extract 0 32
+    store 245 // v843 :: Address
+    load 246 // data_id/788 :: Tuple(Address, Bool)
+    extract 32 1
+    btoi
+    store 244 // v844 :: Bool
+    txn Sender
+    load 250 // owner/498 :: Address
+    ==
+    txn Sender
+    load 251 // approved/497 :: Address
+    ==
+    ||
+    int 0
+    txn Sender
+    dup
+    txn ApplicationID
+    app_opted_in
+    bnz l14_mapLoadDo
+    l15_mapLoadDef:
+    pop
+    int 2
+    bzero
+    b l13_mapLoadK
+    l14_mapLoadDo:
+    int 1
+    bzero
+    app_local_get
+    l13_mapLoadK:
+    dup
+    store 243 // fromSome object
+    extract 1 1
+    btoi
+    load 243 // fromSome object
+    int 0
+    getbyte
+    select
+    ||
+    assert
+    // ^ Claim
+    // at ./index.rsh:173:16:application
+    // at ./index.rsh:172:7:application call to [unknown function] (defined at: ./index.rsh:172:7:function exp)
+    byte base64(AAAAAAAAA1M=)
+    int 1
+    itob // bool
+    substring 7 8
+    concat
+    log // up to 9 bytes
+    int 1
+    dup
+    itob // bool
+    substring 7 8
+    store 6 // GV_apiRet :: Null
+    load 245 // v843 :: Address
+    byte base64(AQ==)
+    load 244 // v844 :: Bool
+    itob // bool
+    substring 7 8
+    concat
+    int 1
+    bzero
+    swap
+    app_local_put
+    byte base64(8F5E7Q==)
+    txn Sender
+    concat
+    load 245 // v843 :: Address
+    concat
+    load 244 // v844 :: Bool
+    itob // bool
+    substring 7 8
+    concat
+    log // up to 69 bytes
+    byte base64()
+    load 255 // v484 :: Address
+    load 254 // name/485 :: Bytes(32)
+    concat
+    load 253 // symbol/486 :: Bytes(32)
+    concat
+    load 252 // uri/487 :: Bytes(128)
+    concat
+    load 251 // approved/497 :: Address
+    load 250 // owner/498 :: Address
+    concat
+    global Round
+    itob
+    concat
+    global LatestTimestamp
+    itob
+    concat
+    b loopBody2
+    // l12_Switch_setApprovalForAll0_113 }
+
+  l6_Switch_lt_2:
+  dup
+  int 1
+  <
+  bnz l16_Switch_lt_1
+  pop
+
+    // { l17_Switch_safeTransferFrom0_113
+    l17_Switch_safeTransferFrom0_113:
+    load 247 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)}) for switch
+    extract 1 72
+    store 246 // data_id/700 :: Tuple(Address, Address, UInt)
+    // ^ CheckPay
+    // at ./index.rsh:78:43:dot
+    load 246 // data_id/700 :: Tuple(Address, Address, UInt)
+    extract 0 32
+    store 245 // v737 :: Address
+    load 246 // data_id/700 :: Tuple(Address, Address, UInt)
+    extract 32 32
+    store 244 // v738 :: Address
+    load 246 // data_id/700 :: Tuple(Address, Address, UInt)
+    int 64
+    extract_uint64
+    store 243 // v739 :: UInt
+    load 245 // v737 :: Address
+    load 250 // owner/498 :: Address
+    ==
+    load 245 // v737 :: Address
+    load 251 // approved/497 :: Address
+    ==
+    ||
+    int 0
+    load 245 // v737 :: Address
+    dup
+    txn ApplicationID
+    app_opted_in
+    bnz l19_mapLoadDo
+    l20_mapLoadDef:
+    pop
+    int 2
+    bzero
+    b l18_mapLoadK
+    l19_mapLoadDo:
+    int 1
+    bzero
+    app_local_get
+    l18_mapLoadK:
+    dup
+    store 242 // fromSome object
+    extract 1 1
+    btoi
+    load 242 // fromSome object
+    int 0
+    getbyte
+    select
+    ||
+    assert
+    // ^ Claim
+    // at ./index.rsh:117:16:application
+    // at ./index.rsh:116:7:application call to [unknown function] (defined at: ./index.rsh:116:7:function exp)
+    load 243 // v739 :: UInt
+    int 0
+    ==
+    assert
+    // ^ Claim
+    // at ./index.rsh:118:16:application
+    // at ./index.rsh:116:7:application call to [unknown function] (defined at: ./index.rsh:116:7:function exp)
+    byte base64(AAAAAAAAAus=)
+    int 1
+    itob // bool
+    substring 7 8
+    concat
+    log // up to 9 bytes
+    int 1
+    dup
+    itob // bool
+    substring 7 8
+    store 6 // GV_apiRet :: Null
+    byte base64(seE0rA==)
+    load 245 // v737 :: Address
+    concat
+    load 244 // v738 :: Address
+    concat
+    load 243 // v739 :: UInt
+    itob
+    concat
+    log // up to 76 bytes
+    byte base64()
+    load 255 // v484 :: Address
+    load 254 // name/485 :: Bytes(32)
+    concat
+    load 253 // symbol/486 :: Bytes(32)
+    concat
+    load 252 // uri/487 :: Bytes(128)
+    concat
+    load 244 // v738 :: Address
+    dup
+    concat
+    global Round
+    itob
+    concat
+    global LatestTimestamp
+    itob
+    concat
+    b loopBody2
+    // l17_Switch_safeTransferFrom0_113 }
+
+  l16_Switch_lt_1:
+  pop
+
+    // { l21_Switch_approve0_113
+    l21_Switch_approve0_113:
+    load 247 // v609 :: Data({"approve0_113": Tuple(Address, UInt), "safeTransferFrom0_113": Tuple(Address, Address, UInt), "setApprovalForAll0_113": Tuple(Address, Bool), "transferFrom0_113": Tuple(Address, Address, UInt)}) for switch
+    extract 1 40
+    store 246 // data_id/612 :: Tuple(Address, UInt)
+    // ^ CheckPay
+    // at ./index.rsh:78:43:dot
+    load 246 // data_id/612 :: Tuple(Address, UInt)
+    extract 0 32
+    store 245 // v632 :: Address
+    load 246 // data_id/612 :: Tuple(Address, UInt)
+    int 32
+    extract_uint64
+    store 244 // v633 :: UInt
+    txn Sender
+    load 250 // owner/498 :: Address
+    ==
+    txn Sender
+    load 251 // approved/497 :: Address
+    ==
+    ||
+    int 0
+    txn Sender
+    dup
+    txn ApplicationID
+    app_opted_in
+    bnz l23_mapLoadDo
+    l24_mapLoadDef:
+    pop
+    int 2
+    bzero
+    b l22_mapLoadK
+    l23_mapLoadDo:
+    int 1
+    bzero
+    app_local_get
+    l22_mapLoadK:
+    dup
+    store 243 // fromSome object
+    extract 1 1
+    btoi
+    load 243 // fromSome object
+    int 0
+    getbyte
+    select
+    ||
+    assert
+    // ^ Claim
+    // at ./index.rsh:155:16:application
+    // at ./index.rsh:154:7:application call to [unknown function] (defined at: ./index.rsh:154:7:function exp)
+    load 244 // v633 :: UInt
+    int 0
+    ==
+    assert
+    // ^ Claim
+    // at ./index.rsh:156:16:application
+    // at ./index.rsh:154:7:application call to [unknown function] (defined at: ./index.rsh:154:7:function exp)
+    byte base64(AAAAAAAAAoE=)
+    int 1
+    itob // bool
+    substring 7 8
+    concat
+    log // up to 9 bytes
+    int 1
+    dup
+    itob // bool
+    substring 7 8
+    store 6 // GV_apiRet :: Null
+    byte base64(sfXz4g==)
+    txn Sender
+    concat
+    load 245 // v632 :: Address
+    concat
+    load 244 // v633 :: UInt
+    itob
+    concat
+    log // up to 76 bytes
+    byte base64()
+    load 255 // v484 :: Address
+    load 254 // name/485 :: Bytes(32)
+    concat
+    load 253 // symbol/486 :: Bytes(32)
+    concat
+    load 252 // uri/487 :: Bytes(128)
+    concat
+    load 245 // v632 :: Address
+    load 250 // owner/498 :: Address
+    concat
+    global Round
+    itob
+    concat
+    global LatestTimestamp
+    itob
+    concat
+    b loopBody2
+    // l21_Switch_approve0_113 }
+
+  // publish3 }
+
+l4_publish_lt_3:
+pop
+l3_publish_lt_2:
+dup
+int 1
+<
+bnz l25_publish_lt_1
+pop
+
+  // { publish1
+  publish1:
+  // check step
+  int 1
+  load 1 // GV_currentStep :: UInt
+  ==
+  assert
+  // check time
+  load 3 // GV_argTime :: UInt
+  dup
+  int 0
+  ==
+  swap
+  load 2 // GV_currentTime :: UInt
+  ==
+  ||
+  assert
+  int 1
+  bzero
+  app_global_get
+  byte base64(AQ==)
+  app_global_get
+  concat
+  dup
+  extract 0 32
+  store 255 // v484 :: Address
+  dup
+  extract 32 32
+  store 254 // name/485 :: Bytes(32)
+  dup
+  extract 64 32
+  store 253 // symbol/486 :: Bytes(32)
+  dup
+  extract 96 128
+  store 252 // uri/487 :: Bytes(128)
+  pop
+  load 4 // GV_argMsg :: Null
+  dup
+  len
+  int 0
+  ==
+  assert
+  pop
+  byte base64(mouRdA==)
+  log // up to 4 bytes
+  // ^ CheckPay
+  // at ./index.rsh:69:11:dot
+  load 255 // v484 :: Address
+  txn Sender
+  ==
+  assert
+  // ^ Claim: sender correct
+  // at ./index.rsh:69:11:dot
+  load 255 // v484 :: Address
+  load 254 // name/485 :: Bytes(32)
+  concat
+  load 253 // symbol/486 :: Bytes(32)
+  concat
+  load 252 // uri/487 :: Bytes(128)
+  concat
+  load 255 // v484 :: Address
+  dup
+  concat
+  global Round
+  itob
+  concat
+  global LatestTimestamp
+  itob
+  concat
+  b loopBody2
+  // publish1 }
+
+l25_publish_lt_1:
+pop
+
+  // { publish0
+  publish0:
+  // check step
+  int 0
+  load 1 // GV_currentStep :: UInt
+  ==
+  assert
+  // check time
+  load 3 // GV_argTime :: UInt
+  dup
+  int 0
+  ==
+  swap
+  load 2 // GV_currentTime :: UInt
+  ==
+  ||
+  assert
+  byte base64()
+  pop
+  load 4 // GV_argMsg :: Null
+  dup
+  len
+  int 192
+  ==
+  assert
+  dup
+  extract 0 32
+  store 255 // name/485 :: Bytes(32)
+  dup
+  extract 32 32
+  store 254 // symbol/486 :: Bytes(32)
+  dup
+  extract 64 128
+  store 253 // uri/487 :: Bytes(128)
+  pop
+  byte base64(r8y54A==)
+  load 255 // name/485 :: Bytes(32)
+  concat
+  load 254 // symbol/486 :: Bytes(32)
+  concat
+  load 253 // uri/487 :: Bytes(128)
+  concat
+  log // up to 196 bytes
+
+    // { l26_checkTxnK
+    int 100000
+    dup
+    bz l26_checkTxnK
+    load 0 // GV_txnCounter :: UInt
+    dup
+    int 1
+    +
+    store 0 // GV_txnCounter :: UInt
+    swap
+    dig 1
+    gtxns Amount
+    ==
+    assert
+    int pay
+    dig 1
+    gtxns TypeEnum
+    ==
+    assert
+    int 0
+    dig 1
+    gtxns Fee
+    ==
+    assert
+    global ZeroAddress
+    dig 1
+    gtxns Lease
+    ==
+    assert
+    global ZeroAddress
+    dig 1
+    gtxns RekeyTo
+    ==
+    assert
+    global CurrentApplicationAddress
+    dig 1
+    gtxns Receiver
+    ==
+    assert
+    l26_checkTxnK:
+    pop
+    // l26_checkTxnK }
+
+  // ^ CheckPay
+  // at ./index.rsh:66:11:dot
+  // ^ CheckPay
+  // at ./index.rsh:66:11:dot
+  txn Sender
+  load 255 // name/485 :: Bytes(32)
+  concat
+  load 254 // symbol/486 :: Bytes(32)
+  concat
+  load 253 // uri/487 :: Bytes(128)
+  concat
+  int 1
+  bzero
+  dig 1
+  extract 0 127
+  app_global_put
+  byte base64(AQ==)
+  dig 1
+  extract 127 97
+  app_global_put
+  pop
+  int 1
+  store 1 // GV_currentStep :: UInt
+  global Round
+  store 2 // GV_currentTime :: UInt
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+  b updateState
+  // publish0 }
+
+
+  // { loopBody2
+  loopBody2:
+  dup
+  extract 0 32
+  store 255 // approved/497 :: Address
+  dup
+  extract 32 32
+  store 254 // owner/498 :: Address
+  dup
+  int 64
+  extract_uint64
+  store 253 // thisConsensusTime/499 :: UInt
+  dup
+  int 72
+  extract_uint64
+  store 252 // thisConsensusSecs/502 :: UInt
+  pop
+  dup
+  extract 0 32
+  store 251 // v484 :: Address
+  dup
+  extract 32 32
+  store 250 // name/485 :: Bytes(32)
+  dup
+  extract 64 32
+  store 249 // symbol/486 :: Bytes(32)
+  dup
+  extract 96 128
+  store 248 // uri/487 :: Bytes(128)
+  pop
+  load 252 // thisConsensusSecs/502 :: UInt
+  int 5
+  +
+  store 247 // v527 :: UInt
+  load 251 // v484 :: Address
+  load 250 // name/485 :: Bytes(32)
+  concat
+  load 249 // symbol/486 :: Bytes(32)
+  concat
+  load 248 // uri/487 :: Bytes(128)
+  concat
+  load 255 // approved/497 :: Address
+  concat
+  load 254 // owner/498 :: Address
+  concat
+  load 247 // v527 :: UInt
+  itob
+  concat
+  int 1
+  bzero
+  dig 1
+  extract 0 127
+  app_global_put
+  byte base64(AQ==)
+  dig 1
+  extract 127 127
+  app_global_put
+  byte base64(Ag==)
+  dig 1
+  extract 254 42
+  app_global_put
+  pop
+  int 4
+  store 1 // GV_currentStep :: UInt
+  global Round
+  store 2 // GV_currentTime :: UInt
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+  b updateState
+  // loopBody2 }
+
+updateState:
+byte base64()
+load 1 // GV_currentStep :: UInt
+itob
+load 2 // GV_currentTime :: UInt
+itob
+concat
+app_global_put
+load 5 // GV_wasApi :: Bool
+bz checkSize
+apiReturn:
+byte base64(FR98dQ==)
+load 6 // GV_apiRet :: Null
+concat
+log // up to 5 bytes
+checkSize:
+load 0 // GV_txnCounter :: UInt
+dup
+int 1
++
+global GroupSize
+==
+assert
+txn GroupIndex
+==
+assert
+done:
+int 1
+return
+fail:
+int 0
+return
+alloc:
+txn OnCompletion
+int NoOp
+==
+assert
+int 0
+store 1 // GV_currentStep :: UInt
+int 0
+store 2 // GV_currentTime :: UInt
+b updateState
